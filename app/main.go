@@ -57,6 +57,13 @@ import (
 // @scope.admin Grants read and write access to administrative information
 
 func main() {
+    engine := GetMainEngine()
+    if err := engine.Run(); err != nil {
+        log.Fatal(err)
+    }
+}
+
+func GetMainEngine() *gin.Engine {
     r := gin.Default()
 
     c := controller.NewController()
@@ -79,9 +86,8 @@ func main() {
         }
     }
     r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-    if err := r.Run(); err != nil {
-        log.Fatal(err)
-    }
+
+    return r
 }
 
 func auth() gin.HandlerFunc {
