@@ -1,0 +1,19 @@
+version: '3'
+services:
+  app:
+    container_name: "go-rest"
+    build:
+      context: .
+      dockerfile: Dockerfile-debug
+    restart: always
+    volumes:
+      - ".:${PROJECT_DIR}"
+    env_file:
+      - .env
+    environment:
+      WORK_DIR: "${PROJECT_DIR}/app"
+    ports:
+      - "8080:8080" # app
+      - "2345:2345" # Delve debugger
+    security_opt:
+      - "seccomp:unconfined"

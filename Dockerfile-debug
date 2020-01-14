@@ -1,0 +1,30 @@
+# Dockerfile References: https://docs.docker.com/engine/reference/builder/
+
+FROM golang:1.13-alpine3.11
+
+COPY scripts /
+
+ENV GOPATH /go
+ENV GO111MODULE on
+ENV PATH $GOPATH/bin:/usr/local/go/bin:$PATH
+
+RUN apk update && \
+    apk upgrade && \
+    apk add --no-cache \
+        ca-certificates \
+        dpkg \
+        gcc \
+        musl-dev \
+        bash \
+        git \
+        openssh
+
+RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" \
+    && chmod -R 777 "$GOPATH" \
+    && chmod +x /entrypoint.sh \
+    && go get github.com/go-delve/delve/cmd/dlv
+
+WORKDIR $GOPATH
+ENTRYPOINT ["/entrypoint.sh"]
+
+CMD ["dlv", "debug", "--headless", "--listen=:2345", "--api-version=2", "--log"]

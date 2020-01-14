@@ -1,0 +1,13 @@
+version: '3'
+services:
+  app:
+    container_name: "go-rest"
+    build: "."
+    restart: always
+    env_file:
+      - .env
+    environment:
+      WORK_DIR: "${PROJECT_DIR}/app"
+      GIN_MODE: "release"
+    ports:
+      - "8080:8080"
