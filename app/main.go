@@ -1,17 +1,17 @@
 package main
 
 import (
-	"errors"
-	"log"
-	"net/http"
+    "errors"
+    "log"
+    "net/http"
 
-	"github.com/gin-gonic/gin"
-	"github.com/trydirect/go-rest/controller"
-	_ "github.com/trydirect/go-rest/docs"
-	"github.com/trydirect/go-rest/httputil"
+    "github.com/gin-gonic/gin"
+    "github.com/trydirect/go-rest/controller"
+    _ "github.com/trydirect/go-rest/docs"
+    "github.com/trydirect/go-rest/httputil"
 
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
+    swaggerFiles "github.com/swaggo/files"
+    ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 // @title Example API
@@ -57,39 +57,39 @@ import (
 // @scope.admin Grants read and write access to administrative information
 
 func main() {
-	r := gin.Default()
+    r := gin.Default()
 
-	c := controller.NewController()
+    c := controller.NewController()
 
-	v1 := r.Group("/api/v1")
-	{
-		accounts := v1.Group("/accounts")
-		{
-			accounts.GET(":id", c.ShowAccount)
-			accounts.GET("", c.ListAccounts)
-			accounts.POST("", c.AddAccount)
-			accounts.DELETE(":id", c.DeleteAccount)
-			accounts.PATCH(":id", c.UpdateAccount)
-			accounts.POST(":id/images", c.UploadAccountImage)
-		}
-		admin := v1.Group("/admin")
-		{
-			admin.Use(auth())
-			admin.POST("/auth", c.Auth)
-		}
-	}
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	if err := r.Run(); err != nil {
-		log.Fatal(err)
-	}
+    v1 := r.Group("/api/v1")
+    {
+        accounts := v1.Group("/accounts")
+        {
+            accounts.GET(":id", c.ShowAccount)
+            accounts.GET("", c.ListAccounts)
+            accounts.POST("", c.AddAccount)
+            accounts.DELETE(":id", c.DeleteAccount)
+            accounts.PATCH(":id", c.UpdateAccount)
+            accounts.POST(":id/images", c.UploadAccountImage)
+        }
+        admin := v1.Group("/admin")
+        {
+            admin.Use(auth())
+            admin.POST("/auth", c.Auth)
+        }
+    }
+    r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+    if err := r.Run(); err != nil {
+        log.Fatal(err)
+    }
 }
 
 func auth() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		if len(c.GetHeader("Authorization")) == 0 {
-			httputil.NewError(c, http.StatusUnauthorized, errors.New("authorization is required Header"))
-			c.Abort()
-		}
-		c.Next()
-	}
+    return func(c *gin.Context) {
+        if len(c.GetHeader("Authorization")) == 0 {
+            httputil.NewError(c, http.StatusUnauthorized, errors.New("authorization is required Header"))
+            c.Abort()
+        }
+        c.Next()
+    }
 }

@@ -6,10 +6,10 @@ type Controller struct {
 
 // NewController example
 func NewController() *Controller {
-	return &Controller{}
+    return &Controller{}
 }
 
 // Message example
 type Message struct {
-	Message string `json:"message" example:"message"`
+    Message string `json:"message" example:"message"`
 }
