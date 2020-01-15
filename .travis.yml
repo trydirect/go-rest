@@ -17,6 +17,9 @@ script:
 
 notifications:
   email: false
+  slack:
+    rooms:
+      - optimum-team:GycletOWK4Kt95GktwYwfUMp#build
 
 after_success:
   - echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
