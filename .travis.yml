@@ -10,11 +10,8 @@ before_install:
 install:
   - docker-compose up -d --build
   - docker-compose ps
-before_script:
-  - bash chmod +x ./.travis/linters.sh
-  - bash chmod +x ./.travis/check-service-status.sh
 script:
-  - bash ./.travis/linters.sh
+#  - bash ./.travis/linters.sh
   - go test -v ./...
   - bash ./.travis/check-service-status.sh
 
