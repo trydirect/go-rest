@@ -5,7 +5,7 @@ go:
 before_install:
   - sudo apt-get update
   - docker-compose --version
-  - pip install docker-compose --upgrade
+  - pip install --user docker-compose --upgrade
   - docker-compose --version
 install:
   - docker-compose up -d --build
